@@ -1995,9 +1995,6 @@ void draw_bars(bool unhide) {
 void redraw_bars(void) {
     i3_output *outputs_walk;
     SLIST_FOREACH(outputs_walk, outputs, slist) {
-        if (!outputs_walk->active) {
-            continue;
-        }
         xcb_copy_area(xcb_connection,
                       outputs_walk->buffer,
                       outputs_walk->bar,
