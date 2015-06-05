@@ -110,13 +110,13 @@ struct xcb_colors_t {
 struct xcb_colors_t colors;
 
 /* Horizontal offset between a workspace label and button borders */
-static const int ws_hoff_px = 4;
+static const int ws_hoff_px = 100;
 
 /* Vertical offset between a workspace label and button borders */
 static const int ws_voff_px = 3;
 
 /* Offset between two workspace buttons */
-static const int ws_spacing_px = 1;
+static const int ws_spacing_px = 8;
 
 /* Offset between the statusline and 1) workspace buttons on the left
  *                                   2) the tray or screen edge on the right */
@@ -1995,14 +1995,7 @@ void draw_bars(bool unhide) {
 void redraw_bars(void) {
     i3_output *outputs_walk;
     SLIST_FOREACH(outputs_walk, outputs, slist) {
-        xcb_copy_area(xcb_connection,
-                      outputs_walk->buffer,
-                      outputs_walk->bar,
-                      outputs_walk->bargc,
-                      0, 0,
-                      0, 0,
-                      outputs_walk->rect.w,
-                      outputs_walk->rect.h);
+        xcb_copy_area(xcb_connection, outputs_walk->buffer, outputs_walk->bar, outputs_walk->bargc, 0, 0, 0, 0, outputs_walk->rect.w, outputs_walk->rect.h);
         xcb_flush(xcb_connection);
     }
 }

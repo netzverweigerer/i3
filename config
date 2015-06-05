@@ -1,0 +1,217 @@
+# i3 custom configuration file
+# vim: ts=2 sw=2 sts=2 et 
+# armin@arminius.org
+
+set $mod Mod4
+set $term $HOME/bin/terminal
+
+# simple color definitions
+
+set $bg "#262626"
+set $fg "#aaaa88"
+set $hl "#ee8833"
+
+# active window frame
+set $aw "#555555"
+
+# font
+# list of artwiz fonts:
+# anorexia aqui cure drift edges fkp gelly glisp glispbold kates
+# lime mintsmild mintsstrong nu smoothansi snap
+set $font gelly
+# set $font cure.de
+font $font
+
+# define commandline for dmenu (application starter)
+set $dmenucommand dmenu_run -fn gelly -l 15 -nb '#262626' -nf '#ccccaa' -sb '#562626' -sf '#e6b6b6'
+bindsym $mod+space exec $dmenucommand
+
+# modifier in floating mode
+floating_modifier $mod
+
+# switch off annoying "focus follows mouse"
+focus_follows_mouse no
+
+# start terminal with mod-enter
+bindsym $mod+Return exec $term
+bindsym Mod1+F4 kill
+bindsym $mod+x kill
+
+# change input focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move window
+bindsym $mod+Shift+H move left
+bindsym $mod+Shift+J move down
+bindsym $mod+Shift+K move up
+bindsym $mod+Shift+L move right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# set split mode
+bindsym $mod+Shift+v split h
+bindsym $mod+v split v
+
+# fullscreen mode
+bindsym $mod+f fullscreen
+
+# change layout
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout default
+
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+Tab focus right
+bindsym $mod+Shift+Tab focus left
+bindsym Mod1+Tab focus right
+bindsym Mod1+Shift+Tab focus left
+bindsym $mod+a focus parent
+bindsym $mod+Shift+a focus child
+
+# additional keybindings
+bindsym $mod+n workspace next
+bindsym $mod+p workspace prev
+
+bindsym Ctrl+Mod1+Delete exec xautolock -locknow
+bindsym Ctrl+Mod1+l exec xautolock -locknow
+
+# reload / restart
+bindsym $mod+Shift+C reload
+bindsym $mod+Shift+R exec $HOME/bin/i3restart; restart
+
+# floating windows
+bindsym $mod+m mode "move" floating
+
+# move floating windows
+mode "move" {
+  bindsym $mod+Tab focus right
+  bindsym Left move left
+  bindsym Down move down
+  bindsym Up move up
+  bindsym Right move right
+  bindsym h move left
+  bindsym j move down
+  bindsym k move up
+  bindsym l move right
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+# resize mode
+mode "resize" {
+  bindsym l resize grow right 3 px or 3 ppt
+  bindsym h resize shrink right 3 px or 3 ppt
+  bindsym j resize grow height 3 px or 3 ppt
+  bindsym k resize shrink height 3 px or 3 ppt
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+# keybinding for resize mode
+bindsym $mod+r mode "resize"
+
+# top bar
+bar {
+  position top
+  workspace_buttons yes
+  status_command /home/armin/bin/i3info $fg
+  colors {
+    background $bg
+    statusline $fg
+    focused_workspace $bg $bg $hl
+    active_workspace $bg $bg $fg
+    inactive_workspace $bg $bg $fg
+    urgent_workspace $bg $hl $fg
+  }
+}
+
+# bottom bar
+bar {
+  position bottom
+  # do not show workspace buttons on bottom bar
+  workspace_buttons no
+  status_command i3status -c ~/.i3status.conf | ~/bin/i3status_wrapper $fg
+  colors {
+    background $bg
+    statusline $fg
+    focused_workspace $hl $bg $fg
+    active_workspace $g6 $bg $g6
+    inactive_workspace $bg $bg $fg
+    urgent_workspace $bg $g6 $fg
+  }
+}
+
+
+# client colors
+client.focused $bg $aw $aw $aw
+client.focused_inactive $bg $bg $bg $bg
+client.unfocused $bg $bg $bg $bg
+client.urgent $fg $bg $fg $fg
+client.background $bg
+
+# set application specific attributes
+for_window [class="VirtualBox"] floating enable
+for_window [class="Gimp"] floating enable
+for_window [class="Lxappearance"] floating enable
+
+for_window [class="Iceweasel"] move container to workspace $ws2
+for_window [class="Icedove"] move container to workspace $ws3
+
+
+# use 1px border around new windows
+new_window 1pixel
+# new_window pixel 2
+
+# same for floating windows
+# new_float 1pixel
+
+# default workspace layout
+# <default|stacking|tabbed>
+workspace_layout default
+
+# define variables for workspace names 
+set $ws1 1: Chat
+set $ws2 2: Web
+set $ws3 3: Mail
+set $ws4 4: Music
+set $ws5 5: Shells
+set $ws6 6: Config
+set $ws7 7: Code
+set $ws8 8: Tabbed
+set $ws9 9: Stacked
+set $ws10 10: Unsorted
+
+# workspace keybindings
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+bindsym $mod+Shift+exclam move container to workspace $ws1
+bindsym $mod+Shift+quotedbl move container to workspace $ws2
+bindsym $mod+Shift+section move container to workspace $ws3
+bindsym $mod+Shift+dollar move container to workspace $ws4
+bindsym $mod+Shift+percent move container to workspace $ws5
+bindsym $mod+Shift+ampersand move container to workspace $ws6
+bindsym $mod+Shift+slash move container to workspace $ws7
+bindsym $mod+Shift+parenleft move container to workspace $ws8
+bindsym $mod+Shift+parenright move container to workspace $ws9
+bindsym $mod+Shift+equal move container to workspace $ws10
+bindsym $mod+Shift+N move container to workspace next
+bindsym $mod+Shift+P move container to workspace prev
+
+
