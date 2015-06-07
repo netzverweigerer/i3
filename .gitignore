@@ -4,6 +4,7 @@ include/GENERATED_*.h
 include/all.h.pch
 *~
 *.swp
+*.swo
 *.gcda
 *.gcno
 *.dSYM

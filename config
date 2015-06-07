@@ -5,25 +5,61 @@
 set $mod Mod4
 set $term $HOME/bin/terminal
 
-# simple color definitions
+# simple color definitions...
+set $client.bg "#262626"
+set $client.fg "#bbbbaa"
 
-set $bg "#262626"
-set $fg "#aaaa88"
-set $hl "#ee8833"
+set $workspace.focused.border "#464646"
+set $workspace.focused.fg "#cc6633"
+set $workspace.focused.bg "#262626"
 
-# active window frame
-set $aw "#555555"
+set $workspace.inactive.border "#262626"
+set $workspace.inactive.fg "#bbbbaa"
+set $workspace.inactive.bg "#262626"
+
+set $workspace.active.border "#262626"
+set $workspace.active.fg "#bbbbaa"
+set $workspace.active.bg "#262626"
+
+set $workspace.urgent.border "#bbbbaa"
+set $workspace.urgent.fg "#888888"
+set $workspace.urgent.bg "#000000"
+
+# tab border
+set $client.focused.a "#000000"
+
+# tab bg / focus frame
+set $client.focused.b "#444444"
+
+# tab text
+set $client.focused.c "#ccccaa"
+
+# split indicator border
+set $client.focused.d "#444444"
+
+# unfocused tab border
+set $client.unfocused.a "#464626"
+
+set $client.unfocused.b "#262626"
+set $client.unfocused.c "#262626"
+set $client.unfocused.d "#262626"
+
+set $client.urgent.a "#262626"
+set $client.urgent.b "#262626"
+set $client.urgent.c "#262626"
+set $client.urgent.d "#262626"
 
 # font
 # list of artwiz fonts:
 # anorexia aqui cure drift edges fkp gelly glisp glispbold kates
 # lime mintsmild mintsstrong nu smoothansi snap
-set $font gelly
+# set $font gelly
+set $font gelly.de
 # set $font cure.de
 font $font
 
 # define commandline for dmenu (application starter)
-set $dmenucommand dmenu_run -fn gelly -l 15 -nb '#262626' -nf '#ccccaa' -sb '#562626' -sf '#e6b6b6'
+set $dmenucommand dmenu_run -fn gelly.de -l 15 -nb '#262626' -nf '#bbbbaa' -sb '#562626' -sf '#ccccbb'
 bindsym $mod+space exec $dmenucommand
 
 # modifier in floating mode
@@ -42,6 +78,7 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
@@ -106,57 +143,64 @@ mode "move" {
   bindsym Escape mode "default"
 }
 
-# resize mode
+# workaround to fix (most) of the weirdness of the broken way "resize" in i3
+# works:
 mode "resize" {
-  bindsym l resize grow right 3 px or 3 ppt
-  bindsym h resize shrink right 3 px or 3 ppt
-  bindsym j resize grow height 3 px or 3 ppt
-  bindsym k resize shrink height 3 px or 3 ppt
-  bindsym Return mode "default"
-  bindsym Escape mode "default"
+ bindsym h resize grow left 12 px or 3 ppt; resize grow right 12 px or 3 ppt
+ bindsym j resize shrink up 12 px or 3 ppt; resize shrink down 12 px or 3 ppt
+ bindsym k resize grow up 12 px or 3 ppt; resize grow down 12 px or 3 ppt
+ bindsym l resize shrink left 12 px or 3 ppt; resize shrink right 12 px or 3 ppt
+ bindsym Return mode "default"
+ bindsym Escape mode "default"
 }
 
 # keybinding for resize mode
 bindsym $mod+r mode "resize"
 
+# i3bar(s)
 # top bar
 bar {
   position top
   workspace_buttons yes
-  status_command /home/armin/bin/i3info $fg
+  status_command i3blocks -c ~/git/i3/armin/i3blocks-top.conf
   colors {
-    background $bg
-    statusline $fg
-    focused_workspace $bg $bg $hl
-    active_workspace $bg $bg $fg
-    inactive_workspace $bg $bg $fg
-    urgent_workspace $bg $hl $fg
-  }
+    # color mapping (do not edit!)
+    statusline $client.fg
+    focused_workspace $workspace.focused.border $workspace.focused.bg $workspace.focused.fg
+    active_workspace $workspace.active.border $workspace.active.bg $workspace.active.fg
+    inactive_workspace $workspace.inactive.fg $workspace.inactive.bg $workspace.inactive.border
+    urgent_workspace $workspace.urgent.bg $workspace.urgent.fg $workspace.urgent.border
+    background $client.bg
+   }
 }
-
 # bottom bar
 bar {
   position bottom
-  # do not show workspace buttons on bottom bar
   workspace_buttons no
-  status_command i3status -c ~/.i3status.conf | ~/bin/i3status_wrapper $fg
+  status_command i3blocks -c ~/git/i3/armin/i3blocks-bottom.conf
   colors {
-    background $bg
-    statusline $fg
-    focused_workspace $hl $bg $fg
-    active_workspace $g6 $bg $g6
-    inactive_workspace $bg $bg $fg
-    urgent_workspace $bg $g6 $fg
-  }
+    # color mapping (do not edit!)
+    statusline $client.fg
+    focused_workspace $workspace.focused.border $workspace.focused.bg $workspace.focused.fg
+    active_workspace $workspace.active.border $workspace.active.bg $workspace.active.fg
+    inactive_workspace $workspace.inactive.fg $workspace.inactive.bg $workspace.inactive.border
+    urgent_workspace $workspace.urgent.bg $workspace.urgent.fg $workspace.urgent.border
+    background $client.bg
+   }
 }
 
 
+# color mapping (do not edit!)
+client.background $client.bg
+client.focused $client.focused.a $client.focused.b $client.focused.c $client.focused.d
+client.focused_inactive $client.inactive.a $client.inactive.b $client.inactive.c $client.inactive.d
+client.unfocused $client.unfocused.a $client.unfocused.b $client.unfocused.c $client.unfocused.d
+client.urgent $client.urgent.a $client.urgent.b $client.urgent.c $client.urgent.d
+
 # client colors
-client.focused $bg $aw $aw $aw
-client.focused_inactive $bg $bg $bg $bg
-client.unfocused $bg $bg $bg $bg
-client.urgent $fg $bg $fg $fg
-client.background $bg
+# color mapping (do not edit!)
+
+# client.placeholder #000000 #DA6F00 #000000 #000000.
 
 # set application specific attributes
 for_window [class="VirtualBox"] floating enable
@@ -172,7 +216,7 @@ new_window 1pixel
 # new_window pixel 2
 
 # same for floating windows
-# new_float 1pixel
+new_float 1pixel
 
 # default workspace layout
 # <default|stacking|tabbed>
@@ -187,8 +231,8 @@ set $ws5 5: Shells
 set $ws6 6: Config
 set $ws7 7: Code
 set $ws8 8: Tabbed
-set $ws9 9: Stacked
-set $ws10 10: Unsorted
+# set $ws9 9: Stacked
+# set $ws10 10: Unsorted
 
 # workspace keybindings
 bindsym $mod+1 workspace $ws1
