@@ -146,10 +146,13 @@ mode "move" {
 # workaround to fix (most) of the weirdness of the broken way "resize" in i3
 # works:
 mode "resize" {
- bindsym h resize grow left 12 px or 3 ppt; resize grow right 12 px or 3 ppt
- bindsym j resize shrink up 12 px or 3 ppt; resize shrink down 12 px or 3 ppt
- bindsym k resize grow up 12 px or 3 ppt; resize grow down 12 px or 3 ppt
- bindsym l resize shrink left 12 px or 3 ppt; resize shrink right 12 px or 3 ppt
+
+ bindsym h resize grow left 12 px or 3 ppt; resize grow right 12 px or 3 ppt; resize shrink left 6 px or 2 ppt; resize shrink right 6 px or 2 ppt
+ bindsym l resize shrink left 12 px or 3 ppt; resize shrink right 12 px or 3 ppt; resize grow left 6 px or 2 ppt; resize grow right 6 px or 2 ppt
+
+ bindsym j resize shrink up 6 px or 2 ppt; resize shrink down 6 px or 2 ppt; resoue grow up 6px or 2 ppt; resize grow down 6 px or 2 ppt
+ bindsym k resize shrink up 6 px or 2 ppt; resize shrink down 6px or 2 ppt; resize grow up 6 px or 2 ppt; resize grow down 6 px or 2 ppt
+
  bindsym Return mode "default"
  bindsym Escape mode "default"
 }
@@ -157,12 +160,12 @@ mode "resize" {
 # keybinding for resize mode
 bindsym $mod+r mode "resize"
 
-# i3bar(s)
+# i3bar / i3blocks
 # top bar
 bar {
   position top
   workspace_buttons yes
-  status_command i3blocks -c ~/git/i3/armin/i3blocks-top.conf
+  status_command i3blocks -c ~/git/armin.config.i3/i3blocks-top.conf
   colors {
     # color mapping (do not edit!)
     statusline $client.fg
@@ -177,7 +180,7 @@ bar {
 bar {
   position bottom
   workspace_buttons no
-  status_command i3blocks -c ~/git/i3/armin/i3blocks-bottom.conf
+  status_command i3blocks -c ~/git/armin.config.i3/i3blocks-bottom.conf
   colors {
     # color mapping (do not edit!)
     statusline $client.fg
@@ -212,11 +215,11 @@ for_window [class="Icedove"] move container to workspace $ws3
 
 
 # use 1px border around new windows
-new_window 1pixel
-# new_window pixel 2
+# new_window 1pixel
+new_window pixel 2
 
 # same for floating windows
-new_float 1pixel
+new_float pixel 2
 
 # default workspace layout
 # <default|stacking|tabbed>
